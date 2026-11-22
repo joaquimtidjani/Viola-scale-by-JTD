@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -11,11 +11,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Viola Scale">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="description" content="Gammes et doigtés de Carl Flesch pour alto : gamme, arpèges, tierces brisées, chromatique, tierces, sixtes, octaves. Par Joaquim Tidjani Diallo.">
-<meta property="og:title" content="Viola Scale – selon Carl Flesch">
-<meta property="og:description" content="Les doigtés de Carl Flesch pour alto, tonalité par tonalité. Par Joaquim Tidjani Diallo.">
+<meta name="description" content="Carl Flesch scales and fingerings for viola: scale, arpeggios, broken thirds, chromatic, thirds, sixths, octaves. By Joaquim Tidjani Diallo.">
+<meta property="og:title" content="Viola Scale – after Carl Flesch">
+<meta property="og:description" content="Carl Flesch fingerings for viola, key by key. By Joaquim Tidjani Diallo.">
 <meta property="og:image" content="icon-512.png">
-<title>Viola Scale – selon Carl Flesch</title>
+<title>Viola Scale – after Carl Flesch</title>
 <style>
 :root{--bg:#faf7f2;--fg:#1f1a17;--mut:#7a6f66;--acc:#8c2f1b;--card:#fff;--line:#d9d0c5;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -58,32 +58,32 @@ svg .fp{fill:var(--acc);font-weight:bold}
 </style>
 </head>
 <body>
-<header class="hero" id="top"><h1>Viola Scale</h1><p class="sub">selon Carl Flesch</p><p class="sub">par <b>Joaquim Tidjani Diallo</b></p><button class="go" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Entrer</button></header>
+<header class="hero" id="top"><h1>Viola Scale</h1><p class="sub">after Carl Flesch</p><p class="sub">by <b>Joaquim Tidjani Diallo</b></p><button class="go" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Enter</button></header>
 <main id="app">
 
-<h2>Gamme</h2>
+<h2>Key</h2>
 <div class="pills" id="keys"></div>
 <h2>Type</h2>
 <div class="pills" id="types"></div>
 <div id="octbox"><h2>Octave</h2>
 <div class="pills" id="octs"></div>
 <p class="note" id="octnote" style="margin:6px 0 0"></p>
-<div id="serbox" style="display:none"><h2>Série de doigtés</h2><div class="pills" id="sers"></div></div></div>
+<div id="serbox" style="display:none"><h2>Fingering series</h2><div class="pills" id="sers"></div></div></div>
 
-<h2>Doigtés</h2>
+<h2>Fingerings</h2>
 <div class="card"><div class="chips" id="chips"></div>
-<p class="note">Seuls les doigtés imprimés par Carl Flesch sont affichés. Les notes sans chiffre ne sont pas doigtées dans le livre.<br>Source : Flesch, Scale System pour alto (C. Karman). Contenu du livre, pour chaque tonalité : exercices 1 à 4, la gamme, les arpèges, les tierces brisées et la chromatique sur une seule corde (1re, 2e, 3e octave) ; exercice 5, les mêmes sur trois octaves ; exercices 6, 7, 8 : tierces, sixtes, octaves (ici, 1re mesure relue note par note) ; exercices 9 à 11 : octaves doigtées, dixièmes, harmoniques (non repris ici). Quand Flesch imprime deux doigtés, le 2e est sous la portée.</p></div>
+<p class="note">Only the fingerings printed by Carl Flesch are shown. Notes without a number are not fingered in the book.<br>Source: Flesch, Scale System for viola (C. Karman). Contents of the book, for each key: exercises 1 to 4, the scale, arpeggios, broken thirds and chromatic scale on one string (1st, 2nd, 3rd octave); exercise 5, the same over three octaves; exercises 6, 7, 8: thirds, sixths, octaves (here, the first bar, re-read note by note); exercises 9 to 11: fingered octaves, tenths, harmonics (not included here). When Flesch prints two fingerings, the second one is below the staff.</p></div>
 
-<h2>Gamme</h2>
+<h2>Score</h2>
 <div class="card scroll"><div id="staff"></div></div>
 
-<h2>Touche de l’alto</h2>
-<div class="card scroll"><div id="fb"></div><p class="note">Seules les notes jouées sont placées, sur la corde où elles se jouent. Le chiffre est le doigt imprimé par Flesch (« 4/3 » : même note prise par deux doigts) ; rond vide : doigt non noté. ½ = doigts serrés (demi-ton), T = doigts écartés (ton). Trait plein à gauche : le sillet.<br><b>Touchez une note</b> (sur la portée ou la touche) pour voir son nom, sa corde, son doigt et sa position.</p></div>
+<h2>Viola fingerboard</h2>
+<div class="card scroll"><div id="fb"></div><p class="note">Only the notes played are shown, on the string where they are played. The number is the finger printed by Flesch (“4/3”: same note taken by two fingers); empty circle: finger not marked. ½ = fingers close together (half step), T = fingers apart (whole step). Solid line on the left: the nut.<br><b>Tap a note</b> (on the staff or the fingerboard) to see its name, string, finger and position.</p></div>
 </main>
 <div id="tip" role="status" aria-live="polite"></div>
 
 <script>
-var FR={C:"Do",D:"Ré",E:"Mi",F:"Fa",G:"Sol",A:"La",B:"Si"};
+var FR={C:"C",D:"D",E:"E",F:"F",G:"G",A:"A",B:"B"};
 var ORD="CDEFGAB";
 /* Chaque note : [hauteur, doigt, 1 si le doigté est imprimé dans le livre] */
 var DATA={
@@ -136,11 +136,12 @@ DATA["Sol majeur"]={"Simple":mk("G",0,3,0,"IV",FF,Z)};
 DATA["Mi mineur"]={"Simple":mk("E",0,3,1,"IV",FF,Z)};
 var sel={k:"Do majeur",t:"Simple",o:0};
 
+var EN={"Do majeur": "C major", "La mineur": "A minor", "Fa majeur": "F major", "Ré mineur": "D minor", "Si♭ majeur": "B♭ major", "Sol mineur": "G minor", "Mi♭ majeur": "E♭ major", "Do mineur": "C minor", "La♭ majeur": "A♭ major", "Fa mineur": "F minor", "Ré♭ majeur": "D♭ major", "Si♭ mineur": "B♭ minor", "Sol♭ majeur": "G♭ major", "Mi♭ mineur": "E♭ minor", "Si majeur": "B major", "Sol♯ mineur": "G♯ minor", "Mi majeur": "E major", "Do♯ mineur": "C♯ minor", "La majeur": "A major", "Fa♯ mineur": "F♯ minor", "Ré majeur": "D major", "Si mineur": "B minor", "Sol majeur": "G major", "Mi mineur": "E minor", "Simple": "Scale", "Arpèges": "Arpeggios", "Chromatique": "Chromatic", "Tierces brisées": "Broken thirds", "Tierces": "Thirds", "Sixtes": "Sixths", "Octaves": "Octaves"};
 function pills(id,list,cur,has,on){
  var el=document.getElementById(id);el.innerHTML="";
- list.forEach(function(x){var b=document.createElement("button");b.textContent=x;
+ list.forEach(function(x){var b=document.createElement("button");b.textContent=EN[x]||x;
   b.setAttribute("aria-pressed",x===cur);
-  if(!has(x)){b.disabled=true;b.title="Bientôt"}
+  if(!has(x)){b.disabled=true;b.title="Coming soon"}
   b.onclick=function(){on(x)};el.appendChild(b)});
 }
 function parse(n){var m=/^([A-G])([#bn]?)(\d)$/.exec(n);
@@ -157,7 +158,7 @@ function draw(s){
  function y(i){return B-(i-ref)*G/2}
  var fy=Math.min(B-80,y(imax)-18),H=Math.max(B+70,y(imin)+22);
  var hasLo=s.notes.some(function(n){return n[3]!==undefined}),ly=Math.max(B+44,y(imin)+30);if(hasLo||s.corde2)H=Math.max(H,ly+(s.corde2?30:10));
- var o='<svg style="min-width:'+(s.gap?0:Math.max(480,Math.round(W*.8)))+'px" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Gamme réécrite en '+(tre?'clé de sol':'clé d’ut troisième ligne')+'">';
+ var o='<svg style="min-width:'+(s.gap?0:Math.max(480,Math.round(W*.8)))+'px" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Scale in '+(tre?'treble clef':'alto clef')+'">';
  for(var k=0;k<5;k++)o+='<line class="st" x1="8" x2="'+(W-8)+'" y1="'+(B-k*G)+'" y2="'+(B-k*G)+'"/>';
  o+='<line class="st" x1="'+(W-8)+'" x2="'+(W-8)+'" y1="'+B+'" y2="'+(B-4*G)+'" style="stroke-width:2.4"/>';
  if(tre)o+='<text x="10" y="'+(B+9)+'" style="font-size:64px;font-family:serif;fill:var(--fg)">𝄞</text>';
@@ -182,12 +183,12 @@ function draw(s){
  return o+'</svg>';
 }
 
-var OPEN={IV:48,III:55,II:62,I:69},BASE={C:0,D:2,E:4,F:5,G:7,A:9,B:11},SN=["IV","III","II","I"],SF=["Do","Sol","Ré","La"];
+var OPEN={IV:48,III:55,II:62,I:69},BASE={C:0,D:2,E:4,F:5,G:7,A:9,B:11},SN=["IV","III","II","I"],SF=["C","G","D","A"];
 function midi(n){var p=parse(n);return 12*(p.o+1)+BASE[p.l]+(p.a==="#"?1:p.a==="b"?-1:0)}
 function drawFB(list,corde){
  var X0=50,L=640,W=720,ys=[40,66,92,118],ao=OPEN[corde],ai=SN.indexOf(corde);
  function px(m){return X0+L*(1-Math.pow(2,-m/12))}
- var o='<svg style="min-width:620px" viewBox="0 0 '+W+' 170" role="img" aria-label="Touche de l’alto">'
+ var o='<svg style="min-width:620px" viewBox="0 0 '+W+' 170" role="img" aria-label="Viola fingerboard">'
   +'<rect x="'+X0+'" y="30" width="'+(W-X0-8)+'" height="98" rx="4" style="fill:var(--bg);stroke:var(--line)"/>'
   +'<line x1="'+X0+'" x2="'+X0+'" y1="28" y2="130" style="stroke:var(--fg);stroke-width:5"/>';
  ys.forEach(function(y,k){var on=k===ai;
@@ -301,7 +302,7 @@ ALL_KEYS.forEach(function(K){var c=DATA[K].Chromatique;if(!c.g||K==="Do majeur"|
 DATA["La mineur"].Chromatique.notes[4][1]=1;
 /* arpèges du livre (exercice 1, sur une corde) : 7 accords construits sur la tonique, puis note finale (4e degré).
    Doigtés imprimés relus dans les 23 tonalités du PDF : même schéma partout. */
-var ARPN=["Accord mineur","Accord majeur","Accord de sixte","Quarte et sixte","Quarte et sixte mineure","Septième diminuée","Septième de dominante"];
+var ARPN=["Minor triad","Major triad","Sixth chord","Six-four chord","Minor six-four chord","Diminished seventh","Dominant seventh"];
 var ARPG=[[[0,0],[2,3],[4,7],[7,12]],[[0,0],[2,4],[4,7],[7,12]],[[0,0],[2,4],[5,9],[7,12]],[[0,0],[3,5],[5,9],[7,12]],[[0,0],[3,5],[5,8],[7,12]],null,[[0,0],[2,4],[4,7],[6,10],[7,12]]];
 var ARPF={reg:[[1,3,1,4,1,3],[1,3,1,4,1,3],[1,3,2,4,2,3],[1,4,2,4,2,4],[1,4,2,4,2,4],[1,3,1,2,4,2,1,3],[1,3,1,3,4,3,1,3],4],
  open:[[0,2,1,4,1,2],[0,2,1,4,1,2],[0,2,1,3,1,2],[0,3,2,4,2,3],[0,3,2,4,2,3],[0,2,1,2,4,2,1,2],[0,2,1,3,4,3,1,2],3]};
@@ -326,7 +327,7 @@ ALL_KEYS.forEach(function(K){var up=[],dn=[],bk=K!=="Do majeur";
  DATA[K]["Tierces brisées"]={corde:DATA[K].Simple.corde,notes:up,desc:dn}});
 function drawFBD(list){var X0=50,L=640,W=720,ys=[40,66,92,118],seq=list.slice(0,Math.ceil(list.length/2)+1),last={},o,dots='';
  function px(m){return X0+L*(1-Math.pow(2,-m/12))}
- o='<svg style="min-width:620px" viewBox="0 0 '+W+' 150" role="img" aria-label="Touche en double corde">'
+ o='<svg style="min-width:620px" viewBox="0 0 '+W+' 150" role="img" aria-label="Fingerboard, double stops">'
   +'<rect x="'+X0+'" y="30" width="'+(W-X0-8)+'" height="98" rx="4" style="fill:var(--bg);stroke:var(--line)"/>'
   +'<line x1="'+X0+'" x2="'+X0+'" y1="28" y2="130" style="stroke:var(--fg);stroke-width:5"/>';
  ys.forEach(function(y,k){o+='<line x1="'+X0+'" x2="'+(W-8)+'" y1="'+y+'" y2="'+y+'" style="stroke:var(--mut);stroke-width:1.2"/>'+'<text class="fbn" x="4" y="'+(y+4)+'">'+SN[k]+' '+SF[k]+'</text>'});
@@ -344,7 +345,7 @@ function drawFBD(list){var X0=50,L=640,W=720,ys=[40,66,92,118],seq=list.slice(0,
 function drawD(L,INF){
  var G=12,B=130,W=60+L.length*56+24,X0=84;
  function y(i){return B-(i-24)*G/2}
- var o='<svg style="min-width:'+Math.max(480,Math.round(W*.8))+'px" viewBox="0 0 '+W+' 210" role="img" aria-label="Doubles cordes">';
+ var o='<svg style="min-width:'+Math.max(480,Math.round(W*.8))+'px" viewBox="0 0 '+W+' 210" role="img" aria-label="Double stops">';
  for(var k=0;k<5;k++)o+='<line class="st" x1="8" x2="'+(W-8)+'" y1="'+(B-k*G)+'" y2="'+(B-k*G)+'"/>';
  o+='<line class="st" x1="'+(W-8)+'" x2="'+(W-8)+'" y1="'+B+'" y2="'+(B-4*G)+'" style="stroke-width:2.4"/>'
   +'<rect x="12" y="'+(B-4*G)+'" width="4.5" height="'+(4*G)+'" fill="currentColor" style="color:var(--fg)"/>'
@@ -412,7 +413,7 @@ function board(items,single,pairs){var spots={},order=[];
  var strs=single!==undefined?[single]:[0,1,2,3],gap=44,top=30;
  function sy(s){return top+(single!==undefined?0:s*gap)}
  var H=sy(strs[strs.length-1])+34,acc="var(--acc)";
- var o='<svg style="min-width:0;max-width:'+Math.round(W*1.1)+'px" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Touche : notes jouées">';
+ var o='<svg style="min-width:0;max-width:'+Math.round(W*1.1)+'px" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Fingerboard: notes played">';
  strs.forEach(function(s){var y=sy(s);o+='<line x1="'+(X0-6)+'" x2="'+(W-6)+'" y1="'+y+'" y2="'+y+'" style="stroke:var(--fg);stroke-width:1.3"/>'+'<text x="2" y="'+(y+4)+'" style="font-size:11px;fill:var(--mut)">'+SN[s]+' '+SF[s]+'</text>'});
  var yA=sy(strs[0])-12,yB=sy(strs[strs.length-1])+12;
  if(p0===0)o+='<line x1="'+(X0-6)+'" x2="'+(X0-6)+'" y1="'+yA+'" y2="'+yB+'" style="stroke:var(--fg);stroke-width:5"/>';
@@ -436,8 +437,8 @@ function boardDbl(list){var items=[],pairs=[],I=dblInfo(list);
 function splitTop(list){var im=0,mv=-1;list.forEach(function(n,i){var v=midi(n[n[7]?0:1]);if(v>mv){mv=v;im=i}});return[list.slice(0,im+1),list.slice(im+1)]}
 function fbHTML(d){var L=function(t,i){return'<p class="note" style="margin:'+(i?10:0)+'px 0 2px">'+t+'</p>'};
  if(d.rows)return d.rows.map(function(r,i){return L(r.nom,i)+boardLine(r.notes,d.corde)}).join("");
- if(d.dbl){var sp=splitTop(d.notes);return L("Montée",0)+boardDbl(sp[0])+(sp[1].length?L("Descente",1)+boardDbl(sp[1]):"")}
- return L(d.desc?"Montée":"",0)+boardLine(d.notes,d.corde)+(d.desc?L("Descente",1)+boardLine(d.desc,d.corde):"")}
+ if(d.dbl){var sp=splitTop(d.notes);return L("Ascending",0)+boardDbl(sp[0])+(sp[1].length?L("Descending",1)+boardDbl(sp[1]):"")}
+ return L(d.desc?"Ascending":"",0)+boardLine(d.notes,d.corde)+(d.desc?L("Descending",1)+boardLine(d.desc,d.corde):"")}
 
 
 /* ===== Do majeur (photo de la page 1) et Do mineur : doigtés imprimés, départ sur la corde à vide ===== */
@@ -477,9 +478,9 @@ function fbHTML(d){var L=function(t,i){return'<p class="note" style="margin:'+(i
 })();
 
 /* ===== info au toucher : nom, corde, doigt, position ===== */
-function posName(h){h=Math.round(h);if(h<=1)return"demi-position";var T={2:1,3:2,4:2,5:3,6:3,7:4,8:5,9:5,10:6,11:6,12:7,13:8,14:8,15:9,16:9,17:10,18:10,19:11,20:12,21:12,22:13,23:14,24:14};var n=T[h]||14;return(n===1?"1re":n+"e")+" position"}
+function posName(h){h=Math.round(h);if(h<=1)return"half position";var T={2:1,3:2,4:2,5:3,6:3,7:4,8:5,9:5,10:6,11:6,12:7,13:8,14:8,15:9,16:9,17:10,18:10,19:11,20:12,21:12,22:13,23:14,24:14};var n=T[h]||14;return(n===1?"1st":n===2?"2nd":n===3?"3rd":n+"th")+" position"}
 function infoTxt(note,s,f,p,h,pr){if(!pr&&!(f===0||p===0)){f=null;h=null}var pa=parse(note),nm=FR[pa.l]+(pa.a==="#"?"♯":pa.a==="b"?"♭":"")+" "+pa.o,open=(f===0||p===0);
- return nm+" — corde "+SN[s]+" ("+SF[s]+") — "+(open?"corde à vide":""+(f==null?"doigt non noté dans le livre":"doigt "+f+" — "+posName(h)))}
+ return nm+" — string "+SN[s]+" ("+SF[s]+") — "+(open?"open string":""+(f==null?"finger not marked in the book":"finger "+f+" — "+posName(h)))}
 function rowInfo(notes,corde){var s=SNI[corde],P=notes.map(function(n){return midi(n[0])-OPS[s]}),H=notes.map(function(n,k){return(n[1]==null||n[1]===0||P[k]===0)?null:P[k]-OFFS[n[1]]}),M=[],i=0;
  while(i<notes.length){if(H[i]===null){M[i]=null;i++;continue}var j=i,g=[];
   while(j<notes.length&&H[j]!==null&&(j===i||Math.abs(H[j]-H[j-1])<=1.5)){g.push(H[j]);j++}
@@ -493,7 +494,7 @@ if(document.addEventListener)document.addEventListener("click",function(e){var t
  if(!t){tip.classList.remove("on");return}t.classList.add("tapsel");tip.textContent=t.getAttribute("data-info");tip.classList.add("on");clearTimeout(tip._t);tip._t=setTimeout(function(){tip.classList.remove("on")},6000)});
 
 /* ===== choix de l'octave (exercices 1, 2-3 et 4 du livre : même suite une octave plus haut) ===== */
-var OCTN=["1re octave","2e octave","3e octave"];
+var OCTN=["1st octave","2nd octave","3rd octave"];
 /* corde principale de chaque octave, d'après le livre ; null = pas de 3e octave sur une corde */
 var OCTC={"Do majeur":[null,"III","I"],"La mineur":[null,"II",null],"Fa majeur":[null,"II","I"],"Ré mineur":[null,"III","I"],
  "Si♭ majeur":[null,"I",null],"Sol mineur":[null,"II","I"],"Mi♭ majeur":[null,"II","I"],"Do mineur":[null,"III","I"],
@@ -612,8 +613,8 @@ function multiHTML(d,ser){var st="",fb="",P=function(t,i){return'<p class="note"
  var all=d.notes.concat(d.desc),R={},n=d.notes.length;
  Object.keys(d.rom||{}).forEach(function(i){R[i]=d.rom[i]});Object.keys(d.rom2||{}).forEach(function(i){R[+i+n]=d.rom2[i]});
  var M=multiParts(all,R,ser),mx=d.notes.length>30?13:12;
- st=P("Montée",0)+drawChunks(d.notes,M.info.slice(0,n),d.rom,mx)+P("Descente",1)+drawChunks(d.desc,M.info.slice(n),d.rom2,mx);
- fb=P("Montée",0)+board(M.items.slice(0,n))+P("Descente",1)+board(M.items.slice(n));
+ st=P("Ascending",0)+drawChunks(d.notes,M.info.slice(0,n),d.rom,mx)+P("Descending",1)+drawChunks(d.desc,M.info.slice(n),d.rom2,mx);
+ fb=P("Ascending",0)+board(M.items.slice(0,n))+P("Descending",1)+board(M.items.slice(n));
  return{st:st,fb:fb}}
 function serView(d){function cv(l){return l.map(function(x){return[x[0],x[3]!==undefined?x[3]:null,x[3]!==undefined?1:0]})}
  return{corde:d.alt,rows:d.rows&&d.rows.map(function(r){return{nom:r.nom,notes:cv(r.notes)}}),notes:d.notes&&cv(d.notes),desc:d.desc&&cv(d.desc)}}
@@ -624,13 +625,13 @@ function render(){
  pills("keys",ALL_KEYS,sel.k,function(x){return DATA[x]},function(x){sel.k=x;sel.ser=0;if(!DATA[x][sel.t])sel.t="Simple";render()});
  document.getElementById("octbox").style.display=isO?"":"none";
  pills("octs",OCTN,OCTN[sel.o],function(x){return hasOct(sel.k,OCTN.indexOf(x))},function(x){sel.o=OCTN.indexOf(x);sel.ser=0;render()});
- [].forEach.call(document.getElementById("octs").children,function(b){if(b.disabled)b.title=b.textContent==="3 octaves"?"Pas encore disponible pour cette tonalité":"Pas de 3e octave sur une seule corde dans le livre"});
- var two=o===3?(d.two?["Doigté du haut","Doigté du bas"]:null):(d.alt?["Corde "+d.corde+" (1re série)","Corde "+d.alt+" (2e série)"]:null);
+ [].forEach.call(document.getElementById("octs").children,function(b){if(b.disabled)b.title=b.textContent==="3 octaves"?"Not available yet for this key":"No 3rd octave on one string in this key in the book"});
+ var two=o===3?(d.two?["Upper fingering","Lower fingering"]:null):(d.alt?["String "+d.corde+" (1st series)","String "+d.alt+" (2nd series)"]:null);
  if(!two)sel.ser=0;
  document.getElementById("serbox").style.display=isO&&two?"":"none";
  if(two)pills("sers",two,two[sel.ser],function(){return true},function(x){sel.ser=two.indexOf(x);render()});
- document.getElementById("octnote").textContent=o===3?"Exercice 5 du livre : trois octaves, avec démanchés et changements de corde. Chiffres romains : corde imprimée par Flesch ; sur la touche, la corde des autres notes est déduite des doigtés imprimés."+(d.two?" Flesch imprime deux doigtés, au-dessus et en dessous de la portée.":"")
-  :"Corde "+d.corde+(o===0?" — exercice 1 du livre":o===1?" — même gamme une octave plus haut (exercices 2-3)":" — deux octaves plus haut (exercices 3-4)")+(hasOct(sel.k,2)?"":". Le livre ne donne que deux octaves sur une corde dans cette tonalité")+(d.alt?". Le livre imprime aussi une 2e série de doigtés sur la corde "+d.alt+", à partir de la corde à vide (chiffres sous la portée).":".");
+ document.getElementById("octnote").textContent=o===3?"Exercise 5 of the book: three octaves, with shifts and string crossings. Roman numerals: string printed by Flesch; on the fingerboard, the string of the other notes is deduced from the printed fingerings."+(d.two?" Flesch prints two fingerings, above and below the staff.":"")
+  :"String "+d.corde+(o===0?" — exercise 1 of the book":o===1?" — same scale one octave higher (exercises 2-3)":" — two octaves higher (exercises 3-4)")+(hasOct(sel.k,2)?"":". In this key the book only gives two octaves on one string")+(d.alt?". The book also prints a 2nd fingering series on string "+d.alt+", starting from the open string (numbers below the staff).":".");
  pills("types",TYPES,sel.t,function(x){return DATA[sel.k]&&DATA[sel.k][x]},function(x){sel.t=x;render()});
  var c=document.getElementById("chips");c.innerHTML="";
  function lo(n){return n[3]!==undefined?'<small style="color:var(--acc)">'+n[3]+'</small>':''}
@@ -642,7 +643,7 @@ function render(){
  var V=(sel.ser&&d.alt)?serView(d):d;
  if(d.rows){document.getElementById("staff").innerHTML=d.rows.map(function(r,i){return '<p class="note" style="margin:'+(i?8:0)+'px 0 2px">'+r.nom+'</p>'+draw({corde:i?"":d.corde,corde2:i?"":(d.alt||""),notes:r.notes,gap:44,info:rowInfo(V.rows[i].notes,V.corde)})}).join("");
   document.getElementById("fb").innerHTML=fbHTML(V);return}
- document.getElementById("staff").innerHTML=d.dbl?drawD(d.notes,dblInfo(d.notes)):(d.desc?'<p class="note" style="margin:0 0 4px">Montée</p>':'')+draw({corde:d.corde,corde2:d.alt||"",notes:d.notes,info:rowInfo(V.notes,V.corde)})+(d.desc?'<p class="note" style="margin:6px 0 4px">Descente</p>'+draw({corde:"",notes:d.desc,info:rowInfo(V.desc,V.corde)}):'');
+ document.getElementById("staff").innerHTML=d.dbl?drawD(d.notes,dblInfo(d.notes)):(d.desc?'<p class="note" style="margin:0 0 4px">Ascending</p>':'')+draw({corde:d.corde,corde2:d.alt||"",notes:d.notes,info:rowInfo(V.notes,V.corde)})+(d.desc?'<p class="note" style="margin:6px 0 4px">Descending</p>'+draw({corde:"",notes:d.desc,info:rowInfo(V.desc,V.corde)}):'');
  document.getElementById("fb").innerHTML=fbHTML(V);
 }
 

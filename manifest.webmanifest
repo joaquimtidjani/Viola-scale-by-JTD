@@ -1,8 +1,8 @@
 {
-  "name": "Viola Scale – selon Carl Flesch",
+  "name": "Viola Scale – after Carl Flesch",
   "short_name": "Viola Scale",
-  "description": "Gammes et doigtés de Carl Flesch pour alto, par Joaquim Tidjani Diallo.",
-  "lang": "fr",
+  "description": "Carl Flesch scales and fingerings for viola, by Joaquim Tidjani Diallo.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -10,8 +10,21 @@
   "background_color": "#1f1a17",
   "theme_color": "#1f1a17",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }
