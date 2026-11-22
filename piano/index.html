@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Piano Scale">
+<title>Piano Scale</title>
+<meta name="theme-color" content="#1f1a17">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=Noto+Music&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf8f4;--card:#fff;--ink:#1c1b19;--mute:#6f6a62;--line:#e6e1d8;--rh:#2457c5;--lh:#c4561b;--acc:#1c1b19;--hi:#ffd24a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px}
+button{font-family:inherit;font-size:14px;cursor:pointer}
+.wrap{max-width:900px;margin:0 auto;padding:16px 14px 40px}
+h1,h2,.serif{font-family:"Cormorant Garamond",Georgia,serif}
+/* home */
+#home{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:30px 18px 54px;color:#fff;
+ background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.25) 40%,rgba(0,0,0,.78) 78%),url(bg.jpg) 38% 20%/cover no-repeat #1f1a17}
+#home h1{font-size:56px;margin:0;font-weight:700;letter-spacing:.5px;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+#home .sub{font-family:"Cormorant Garamond",serif;font-size:19px;font-style:italic;color:rgba(255,255,255,.85);margin:6px 0 2px;max-width:520px}
+#home .by{font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:#fff;margin:12px 0 26px}
+.big{display:block;width:260px;margin:7px auto;padding:14px;border-radius:14px;border:1.5px solid rgba(255,255,255,.9);background:rgba(255,255,255,.12);color:#fff;font-size:16px;font-weight:600;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.big:active{background:#fff;color:var(--ink)}
+/* top bar */
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.back{border:none;background:none;font-size:15px;color:var(--mute);padding:6px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.kbtn{padding:14px 8px;border-radius:12px;border:1px solid var(--line);background:#fff;text-align:center}
+.kbtn b{display:block;font-family:"Cormorant Garamond",serif;font-size:23px}
+.kbtn small{color:var(--mute);font-size:12px}
+.kbtn:active{border-color:var(--ink)}
+h2{font-size:32px;margin:4px 0 2px}
+.meta{color:var(--mute);font-size:13px;margin-bottom:10px}
+.info4{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;margin:8px 0 12px}
+.info4 .r{color:var(--rh);font-weight:600}.info4 .l{color:var(--lh);font-weight:600}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 13px;border-radius:20px;border:1px solid var(--line);background:#fff;white-space:nowrap}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;margin:0 6px 8px 0}
+.seg button{border:none;background:none;padding:7px 11px;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:none}
+.seg button.on{background:#efe9de;font-weight:600}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 0 6px;margin:6px 0 12px}
+.ctitle{padding:0 14px 4px;font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600}
+.cnote{padding:0 14px;color:var(--mute);font-size:12.5px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+svg text{user-select:none}
+.ev{cursor:pointer}
+.ev.cur ellipse{fill:var(--hi);stroke:#000;stroke-width:1.2}
+.ev.cur rect.hit{fill:rgba(255,210,74,.18)}
+.ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0}
+.play{padding:9px 18px;border-radius:22px;border:none;background:var(--ink);color:#fff;font-weight:600}
+.ctrl label{font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:6px}
+#tap{min-height:42px;background:#fffdf6;border:1px dashed #d9cfb8;border-radius:10px;padding:9px 12px;font-size:13.5px;margin:6px 0 10px}
+.legend{font-size:12px;color:var(--mute);padding:0 14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin:0 4px 0 8px}
+footer{color:var(--mute);font-size:11.5px;text-align:center;margin-top:24px;line-height:1.5}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ---------- music model ---------- */
+const LET=['C','D','E','F','G','A','B'], BASE=[0,2,4,5,7,9,11];
+const MAJI=[0,2,4,5,7,9,11], NMI=[0,2,3,5,7,8,10];
+const ACC={'-2':'𝄫','-1':'♭','0':'','1':'♯','2':'𝄪'};
+const ACCT={'-2':'♭♭','-1':'♭','0':'♮','1':'♯','2':'x'};
+
+/* ---------- fingerings, as printed in the book (ascending; descending is the reverse) ---------- */
+const P={W:'123123412312345/543213214321321',F:'123412312341234/543213214321321',B:'123123412312345/432143213214321',
+Bb:'212312341231234/321432132143212',Eb:'212341231234123/321432132143212',Ab:'231231234123123/321432132143212',
+Db:'231234123123412/321432132143212',Fs:'234123123412312/432132143213212',mFs:'231231234123123/432132143213212',
+mCs:'231231234123123/321432132143212',mDs:'212341231234123/214321321432132',mAs:'212312341231234/213214321321432'};
+const tA=['1231235/5421421','1241245/5421421','1241245/5321321'],tD=['1231235/5321321','2124124/3213213','1241245/5321321'],
+tB=['1231235/5321321','2312312/3213213','2123123/2132132'],tFs=['1231235/5321321','1241245/5421421','1241245/5321321'],
+tDb=['2124124/2142142','1241245/5421421','2412412/4214212'],tBb=['2124124/3213213','1241245/5421421','1241245/5321321'],
+mBm=['1231235/5421421','1241245/5421421','2123123/4214212'],mDs=['1231235/5421421','1241245/5421421','1231235/5321321'],
+mAs=['2312312/3213213','3123123/2132132','1231235/5321321'],mGm=['1231235/5421421','3123123/4214212','1231235/5321321'];
+const a5='123412345/543214321',x2='212341234/432143212',x3='212341234/321432143',y2='231234123/432143212',
+y3='231234123/321432143',z2='234123412/432143212',w3='341234123/321432143',v4='212341234/214321432',u2='341234123/432143212';
+const MAJ=[
+ ['C',0,0,'W',tA,[a5,a5,a5,a5],'A minor'],['G',4,0,'W',tA,[a5,x2,a5,a5],'E minor'],['D',1,0,'W',tD,[a5,x2,a5,a5],'B minor'],
+ ['A',5,0,'W',tD,[a5,x2,a5,a5],'F♯ minor'],['E',2,0,'W',tD,[a5,y2,x3,a5],'C♯ minor'],['B',6,0,'B',tB,[z2,w3,v4,a5],'G♯ minor'],
+ ['F♯',3,1,'Fs',tFs,[x2,a5,x2,a5],'D♯ minor'],['C♯',0,1,'Db',tDb,[v4,a5,z2,y3],'A♯ minor'],
+ ['F',3,0,'F',tA,[a5,a5,a5,x2],'D minor'],['B♭',6,-1,'Bb',tBb,[a5,a5,a5,x2],'G minor'],['E♭',2,-1,'Eb',tDb,[x3,a5,a5,y2],'C minor'],
+ ['A♭',5,-1,'Ab',tDb,[v4,a5,z2,y3],'F minor'],['D♭',1,-1,'Db',tDb,[v4,a5,z2,y3],'B♭ minor'],['G♭',4,-1,'Fs',tFs,[v4,a5,x2,a5],'E♭ minor'],
+ ['C♭',0,-1,'B',tB,[z2,w3,v4,a5],'A♭ minor']];
+const MIN=[
+ ['A',5,0,'W',tA,[x2,a5,a5,a5],'C major'],['E',2,0,'W',tA,[y2,x3,a5,a5],'G major'],['B',6,0,'B',mBm,[y2,x3,a5,a5],'D major'],
+ ['F♯',3,1,'mFs',tDb,[a5,x2,a5,a5],'A major'],['C♯',0,1,'mCs',tDb,[a5,y2,x3,a5],'E major'],['G♯',4,1,'mCs',tDb,[a5,y2,x3,a5],'B major'],
+ ['D♯',1,1,'mDs',mDs,[a5,a5,x2,a5],'F♯ major'],['A♯',5,1,'mAs',mAs,[a5,a5,y2,x3],'C♯ major'],
+ ['D',1,0,'W',tA,[x3,a5,a5,y2],'F major'],['G',4,0,'W',mGm,[x3,a5,a5,y2],'B♭ major'],['C',0,0,'W',mGm,[a5,a5,a5,x2],'E♭ major'],
+ ['F',3,0,'F',mGm,[a5,a5,u2,x3],'A♭ major'],['B♭',6,-1,'mAs',mAs,[a5,a5,y2,x3],'D♭ major'],['E♭',2,-1,'mDs',mDs,[a5,a5,x2,a5],'G♭ major'],
+ ['A♭',5,-1,'mCs',tDb,[a5,u2,x3,a5],'C♭ major']];
+function mk(r,minor){return{name:r[0],tl:r[1],ta:r[2],minor,scale:P[r[3]],arp:r[4],sev:r[5],rel:r[6]}}
+const KEYS={major:MAJ.map(r=>mk(r,false)),minor:MIN.map(r=>mk(r,true))};
+
+function sigAcc(k,d){const I=k.minor?NMI:MAJI;const L=(k.tl+d)%7;let x=((BASE[k.tl]+k.ta+I[d]-BASE[L])%12+12)%12;if(x>6)x-=12;return x}
+function raised(mode,d){return (mode==='harm'&&d===6)||(mode==='melUp'&&(d===5||d===6))}
+function noteAt(k,step,oct,mode){const L=oct*7+k.tl+step;const l=((L%7)+7)%7,o=Math.floor(L/7);const d=((step%7)+7)%7;
+ const a=sigAcc(k,d)+(raised(mode,d)?1:0);return{l,a,o,m:12*(o+1)+BASE[l]+a}}
+function fitOct(k,step,mode,lo,hi){for(let o=1;o<7;o++){const n=noteAt(k,step,o,mode);if(n.m>=lo&&n.m<=hi)return o}return 4}
+function nm(n){return LET[n.l]+ACC[n.a]+n.o}
+function nmShort(n){return LET[n.l]+ACC[n.a]}
+function keySig(k){const out=[];for(let d=0;d<7;d++){const a=sigAcc(k,d);if(a)out.push({l:(k.tl+d)%7,a})}return out}
+const fs=s=>s.split('').map(Number);
+
+/* ---------- exercise builders ---------- */
+// event: {rh:[notes], lh:[notes], frh:[fingers], flh:[fingers]}
+function scaleEx(k,type,contrary){
+ const [R,Lf]=k.scale.split('/').map(fs);
+ const up=k.minor?(type==='nat'?'nat':type==='harm'?'harm':'melUp'):'maj';
+ const down=k.minor?(type==='harm'?'harm':'nat'):'maj';
+ const ev=[];
+ if(!contrary){const o=fitOct(k,0,up,53,64);
+  for(let s=0;s<=14;s++)ev.push({rh:[noteAt(k,s,o,up)],lh:[noteAt(k,s,o-1,up)],frh:[R[s]],flh:[Lf[s]]});
+  for(let s=13;s>=0;s--)ev.push({rh:[noteAt(k,s,o,down)],lh:[noteAt(k,s,o-1,down)],frh:[R[s]],flh:[Lf[s]]});
+ }else{ // contrary motion starting on the same note: RH goes up, LH goes down, then both return
+  const o=fitOct(k,0,up,55,66);
+  for(let s=0;s<=14;s++)ev.push({rh:[noteAt(k,s,o,up)],lh:[noteAt(k,-s,o,down)],frh:[R[s]],flh:[Lf[14-s]]});
+  for(let s=13;s>=0;s--)ev.push({rh:[noteAt(k,s,o,down)],lh:[noteAt(k,-s,o,up)],frh:[R[s]],flh:[Lf[14-s]]});
+ }
+ return{ev,bars:[14]};
+}
+function arpEx(k,tones,inv,fstr,n){
+ const [R,Lf]=fstr.split('/').map(fs);const mode=k.minor?'harm':'maj';const c=tones.length;
+ const steps=[];for(let i=0;i<n;i++){const idx=inv+i;steps.push(tones[idx%c]+7*Math.floor(idx/c))}
+ const o=fitOct(k,steps[0],mode,52,64);const ev=[];
+ const seq=[...steps.keys(),...[...steps.keys()].reverse().slice(1)];
+ seq.forEach(i=>ev.push({rh:[noteAt(k,steps[i],o,mode)],lh:[noteAt(k,steps[i],o-1,mode)],frh:[R[i]],flh:[Lf[i]]}));
+ return{ev,bars:[n-1]};
+}
+const ROM_MAJ=['I','ii','iii','IV','V','vi','vii°','I'],ROM_MIN=['i','ii°','III+','iv','V','VI','vii°','i'];
+const DEG=['tonic','supertonic','mediant','subdominant','dominant','submediant','leading tone','tonic'];
+function triadEx(k){const mode=k.minor?'harm':'maj';const o=fitOct(k,0,mode,53,64);const ev=[];
+ for(let d=0;d<8;d++){const st=[d,d+2,d+4];ev.push({rh:st.map(s=>noteAt(k,s,o,mode)),lh:st.map(s=>noteAt(k,s,o-1,mode)),frh:[1,3,5],flh:[5,3,1],lab:(k.minor?ROM_MIN:ROM_MAJ)[d],sub:DEG[d]})}
+ return{ev,bars:[]};}
+const CAD=[ // steps bottom→top; RH fingers bottom→top; LH fingers bottom→top
+ {I:[0,2,4],IV:[0,3,5],V:[-1,1,4],V7:[-1,3,4],f:{I:[1,3,5],IV:[1,3,5],V:[1,2,5],V7:[1,4,5]},g:{I:[5,3,1],IV:[5,2,1],V:[5,3,1],V7:[5,2,1]}},
+ {I:[2,4,7],IV:[3,5,7],V:[1,4,6],V7:[3,4,6],f:{I:[1,2,5],IV:[1,3,5],V:[1,3,5],V7:[1,2,4]},g:{I:[5,3,1],IV:[4,2,1],V:[5,2,1],V7:[4,3,1]}},
+ {I:[4,7,9],IV:[5,7,10],V:[4,6,8],V7:[4,6,10],f:{I:[1,3,5],IV:[1,2,5],V:[1,3,5],V7:[1,2,5]},g:{I:[5,2,1],IV:[4,2,1],V:[5,3,1],V7:[5,3,1]}}];
+function cadEx(k,pos,v7){const mode=k.minor?'harm':'maj';const c=CAD[pos];const o=fitOct(k,0,mode,55,66);
+ const seq=['I','IV','I',v7?'V7':'V','I'];
+ return{ev:seq.map(s=>({rh:c[s].map(x=>noteAt(k,x,o,mode)),lh:c[s].map(x=>noteAt(k,x,o-1,mode)),frh:c.f[s],flh:c.g[s],
+  lab:k.minor?{I:'i',IV:'iv',V:'V',V7:'V7'}[s]:s})),bars:[]};}
+function chromEx(contrary){ // book pp.78-79: from C, sharps up, flats down
+ const up=[[0,0],[0,1],[1,0],[1,1],[2,0],[3,0],[3,1],[4,0],[4,1],[5,0],[5,1],[6,0],[0,0]];
+ const dn=[[0,0],[6,0],[6,-1],[5,0],[5,-1],[4,0],[4,-1],[3,0],[2,0],[2,-1],[1,0],[1,-1],[0,0]];
+ const mkN=(l,a,o)=>({l,a,o,m:12*(o+1)+BASE[l]+a});
+ const rhUp=up.map(([l,a],i)=>mkN(l,a,i===12?5:4)), rhDn=dn.map(([l,a],i)=>mkN(l,a,i===0?5:4));
+ const lhUp=up.map(([l,a],i)=>mkN(l,a,i===12?4:3)), lhDn=dn.map(([l,a],i)=>mkN(l,a,i===0?4:3));
+ const lhDn4=dn.map(([l,a],i)=>mkN(l,a,i===0?4:3)), lhUp4=up.map(([l,a],i)=>mkN(l,a,i===12?4:3));
+ // RH: 3 on black keys, 1 on white keys, 2 on C and F (1 on the lowest C). LH: 3 on black keys, 1 on white keys, 2 on B and E (4 on the lowest C).
+ const fr=n=>n.a?3:(n.l===0&&n.o===4)?1:(n.l===0||n.l===3)?2:1;
+ const fl=n=>n.a?3:(n.l===0&&n.o===3)?4:(n.l===6||n.l===2)?2:1;
+ const RH=[...rhUp,...rhDn.slice(1)];
+ const LH=contrary?[...lhDn4,...lhUp4.slice(1)]:[...lhUp,...lhDn.slice(1)];
+ return{ev:RH.map((n,i)=>({rh:[n],lh:[LH[i]],frh:[fr(n)],flh:[fl(LH[i])]})),bars:[12]};
+}
+
+/* ---------- engraving ---------- */
+const HS=6, SP=36;
+function staffSVG(ex,hand,k){
+ const evs=ex.ev, n=evs.length;
+ const show=hand==='both'?['rh','lh']:[hand];
+ const sig=k?keySig(k):[];
+ const left=58+sig.length*11, W=left+n*SP+24;
+ const isChord=evs.some(e=>e.rh.length>1);
+ // compute vertical extents
+ const staves=show.map(h=>{const treble=h==='rh';const top=treble?38:26;
+  let hiL=top+2,loL=top-10;evs.forEach(e=>e[h].forEach(nn=>{const L=nn.o*7+nn.l;hiL=Math.max(hiL,L);loL=Math.min(loL,L)}));
+  const above=(hiL-top)*HS+(treble?30+(isChord?24:0):14), below=(top-8-loL)*HS+(treble?14:30+(isChord?24:0));
+  return{h,treble,top,above,below}});
+ let y=10;staves.forEach(s=>{s.y0=y+s.above;y=s.y0+48+s.below+10});
+ const H=y+(evs[0].lab?36:4);
+ let g='';
+ staves.forEach(s=>{
+  const yL=L=>s.y0+(s.top-L)*HS;
+  for(let i=0;i<5;i++)g+=`<line x1="8" x2="${W-10}" y1="${s.y0+i*12}" y2="${s.y0+i*12}" stroke="#222" stroke-width="1"/>`;
+  g+=s.treble?`<text x="10" y="${s.y0+38}" font-size="46" font-family="'Noto Music','Apple Symbols','Segoe UI Symbol',serif">𝄞</text>`
+             :`<text x="12" y="${s.y0+34}" font-size="40" font-family="'Noto Music','Apple Symbols','Segoe UI Symbol',serif">𝄢</text>`;
+  // key signature
+  const SH=[38,35,39,36,33,37,34],FL=[34,37,33,36,32,35,31];
+  const sh=sig.filter(x=>x.a>0).length, fl=sig.filter(x=>x.a<0).length;
+  const off=s.treble?0:-14;
+  for(let i=0;i<sh;i++)g+=`<text x="${46+i*11}" y="${yL(SH[i]+off)+5}" font-size="17" text-anchor="middle">♯</text>`;
+  for(let i=0;i<fl;i++)g+=`<text x="${46+i*11}" y="${yL(FL[i]+off)+4}" font-size="18" text-anchor="middle">♭</text>`;
+  g+=`<line x1="${W-10}" x2="${W-10}" y1="${s.y0}" y2="${s.y0+48}" stroke="#222" stroke-width="3"/><line x1="${W-15}" x2="${W-15}" y1="${s.y0}" y2="${s.y0+48}" stroke="#222"/>`;
+  ex.bars.forEach(b=>{const x=left+b*SP+SP/2+SP/2;g+=`<line x1="${x}" x2="${x}" y1="${s.y0}" y2="${s.y0+48}" stroke="#222"/>`});
+  const sigOf=l=>{const f=sig.find(x=>x.l===l);return f?f.a:0};
+  evs.forEach((e,i)=>{
+   const x=left+i*SP+SP/2;let el=`<g class="ev" data-i="${i}"><rect class="hit" x="${x-SP/2}" y="${s.y0-s.above+4}" width="${SP}" height="${s.above+48+s.below-8}" fill="transparent"/>`;
+   const ns=e[s.h];const Ls=ns.map(nn=>nn.o*7+nn.l);
+   ns.forEach((nn,j)=>{const L=Ls[j];const yy=yL(L);
+    const second=j>0&&Ls[j]-Ls[j-1]===1;const xx=x+(second?11:0);
+    // ledger lines
+    const t=s.top;for(let q=t+2;q<=L;q+=2)el+=`<line x1="${xx-10}" x2="${xx+10}" y1="${yL(q)}" y2="${yL(q)}" stroke="#222"/>`;
+    for(let q=t-10;q>=L;q-=2)el+=`<line x1="${xx-10}" x2="${xx+10}" y1="${yL(q)}" y2="${yL(q)}" stroke="#222"/>`;
+    if(nn.a!==sigOf(nn.l))el+=`<text x="${x-13-(second?0:0)}" y="${yy+5}" font-size="${nn.a===2?13:16}" text-anchor="middle" font-weight="${nn.a===2?700:400}">${ACCT[nn.a]}</text>`;
+    el+=`<ellipse cx="${xx}" cy="${yy}" rx="6.6" ry="5" transform="rotate(-20 ${xx} ${yy})" fill="#111"/>`;
+   });
+   // fingers
+   const col=s.h==='rh'?'var(--rh)':'var(--lh)';const f=e['f'+s.h];
+   if(s.treble){const yTop=Math.min(s.y0-10,yL(Math.max(...Ls))-14);
+    f.forEach((d,j)=>el+=`<text x="${x}" y="${yTop-j*13}" font-size="13" font-weight="700" fill="${col}" text-anchor="middle">${d}</text>`);}
+   else{const yB=Math.max(s.y0+48+20,yL(Math.min(...Ls))+22);
+    f.slice().reverse().forEach((d,j)=>el+=`<text x="${x}" y="${yB+j*13}" font-size="13" font-weight="700" fill="${col}" text-anchor="middle">${d}</text>`);}
+   if(e.lab&&s===staves[staves.length-1]){const yb=s.y0+s.below+48+6;el+=`<text x="${x+(isChord?3:0)}" y="${yb+18}" font-size="15" font-family="Cormorant Garamond,serif" font-weight="700" text-anchor="middle">${e.lab}</text>`}
+   el+='</g>';g+=el;});
+ });
+ if(staves.length===2)g+=`<line x1="8" x2="8" y1="${staves[0].y0}" y2="${staves[1].y0+48}" stroke="#222" stroke-width="1.5"/>`;
+ return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
+}
+
+/* ---------- keyboard ---------- */
+function keyboardSVG(ex,hand,cur){
+ const ms=[];ex.ev.forEach(e=>{e.rh.forEach(n=>ms.push(n.m));e.lh.forEach(n=>ms.push(n.m))});
+ const ups=hand==='both'?['rh','lh']:[hand];
+ let lo=Math.min(...ex.ev.flatMap(e=>ups.flatMap(h=>e[h].map(n=>n.m)))),hi=Math.max(...ex.ev.flatMap(e=>ups.flatMap(h=>e[h].map(n=>n.m))));
+ while(lo%12!==0)lo--;while(hi%12!==11)hi++;
+ const isB=m=>[1,3,6,8,10].includes(m%12);
+ const whites=[];for(let m=lo;m<=hi;m++)if(!isB(m))whites.push(m);
+ const ww=Math.max(17,Math.min(30,(Math.min(window.innerWidth,900)-30)/whites.length)),H=110,bw=ww*.62,bh=66;
+ const xOf={};whites.forEach((m,i)=>xOf[m]=i*ww);
+ // labels: fingers of the ascending pass (or the current event)
+ const lab={};const add=(m,h,f)=>{(lab[m]=lab[m]||{})[h]=f};
+ const evs=cur!=null?[ex.ev[cur]]:ex.ev.slice(0,(ex.bars[0]??ex.ev.length-1)+1);
+ evs.forEach(e=>ups.forEach(h=>e[h].forEach((n,j)=>{if(!(lab[n.m]&&lab[n.m][h]))add(n.m,h,e['f'+h][j])})));
+ const press=new Set(cur!=null?ups.flatMap(h=>ex.ev[cur][h].map(n=>n.m)):[]);
+ let g='';
+ whites.forEach(m=>{const x=xOf[m];g+=`<rect x="${x}" y="0" width="${ww}" height="${H}" fill="${press.has(m)?'#ffe08a':'#fff'}" stroke="#333" rx="2"/>`;
+  if(m%12===0)g+=`<text x="${x+ww/2}" y="${H-5}" font-size="9" fill="#999" text-anchor="middle">C${m/12-1}</text>`;});
+ const bx=m=>xOf[m-1]+ww-bw/2;
+ for(let m=lo;m<=hi;m++)if(isB(m))g+=`<rect x="${bx(m)}" y="0" width="${bw}" height="${bh}" fill="${press.has(m)?'#e0a800':'#1d1d1d'}" rx="2"/>`;
+ for(const m in lab){const mm=+m;const b=isB(mm);const cx=b?bx(mm)+bw/2:xOf[mm]+ww/2;let yy=b?bh-30:H-42;
+  ['rh','lh'].forEach(h=>{if(lab[m][h]==null)return;const c=h==='rh'?'#2457c5':'#c4561b';
+   g+=`<circle cx="${cx}" cy="${yy}" r="${Math.min(8,ww/2-1)}" fill="${c}"/><text x="${cx}" y="${yy+4}" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">${lab[m][h]}</text>`;yy+=b?17:18;});}
+ const W=whites.length*ww;
+ return `<svg width="${W}" height="${H+2}" viewBox="0 -1 ${W} ${H+2}">${g}</svg>`;
+}
+
+/* ---------- audio ---------- */
+let AC=null;
+function tone(m,t,dur){const f=440*Math.pow(2,(m-69)/12);const o1=AC.createOscillator(),o2=AC.createOscillator(),g=AC.createGain();
+ o1.type='triangle';o2.type='sine';o1.frequency.value=f;o2.frequency.value=f*2;const g2=AC.createGain();g2.gain.value=.25;
+ o1.connect(g);o2.connect(g2);g2.connect(g);g.connect(AC.destination);
+ g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.22,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+dur);
+ o1.start(t);o2.start(t);o1.stop(t+dur+.05);o2.stop(t+dur+.05);}
+
+/* ---------- state & views ---------- */
+const S={view:'home',group:'major',key:0,tab:'scale',mtype:'harm',inv:0,pos:0,v7:false,hand:'both',motion:'par',bpm:90,cur:null,timer:null};
+const app=document.getElementById('app');
+function stop(){clearTimeout(S.timer);S.timer=null;S.cur=null}
+function go(p){stop();Object.assign(S,p);render();window.scrollTo(0,0)}
+
+function curKey(){return KEYS[S.group][S.key]}
+function keyTitle(k){return `${k.name} ${k.minor?'Minor':'Major'}`}
+function exercise(){
+ if(S.group==='chrom')return{ex:chromEx(S.motion==='con'),title:S.motion==='con'?'Chromatic scale — contrary motion beginning in unison':'Chromatic scale — parallel motion in octaves',note:'Sharps ascending, flats descending. RH 3 on black keys, 1 on white keys except C and F (2). LH 3 on black keys, 1 on white keys except B and E (2). (pp. 17, 78–79)'};
+ const k=curKey();
+ if(S.tab==='scale'){const t=k.minor?S.mtype:'maj';const nm2={maj:'Major scale',nat:'Natural minor scale',harm:'Harmonic minor scale',mel:'Melodic minor scale'}[t];
+  const con=S.motion==='con';return{ex:scaleEx(k,t,con),title:nm2+(con?' — two octaves, contrary motion starting on the same note':' — two octaves, parallel motion in octaves'),note:t==='mel'?'6th and 7th degrees raised ascending, natural descending.':''};}
+ if(S.tab==='arp'){const inv=Math.min(S.inv,2);return{ex:arpEx(k,[0,2,4],inv,k.arp[inv],7),title:`${k.name} ${k.minor?'Minor':'Major'} arpeggio — ${['root position','1st inversion','2nd inversion'][inv]}`,note:'Two-octave arpeggio.'};}
+ if(S.tab==='sev'){const r=k.minor?6:4;const tones=[r,r+2,r+4,r+6];const ex=arpEx(k,tones,S.inv,k.sev[S.inv],9);
+  const root=noteAt(k,r,4,k.minor?'harm':'maj');
+  return{ex,title:`${k.minor?'Diminished':'Dominant'} 7th arpeggio (${nmShort(root)}${k.minor?'°7':'7'}) — ${['root position','1st inversion','2nd inversion','3rd inversion'][S.inv]}`,note:'Two-octave arpeggio.'};}
+ if(S.tab==='tri')return{ex:triadEx(k),title:`${keyTitle(k)} triads — root position`,note:(k.minor?'Built on the harmonic minor scale. ':'')+'Play with RH 1 3 5 and LH 5 3 1 on each triad (p. 6).'};
+ if(S.tab==='cad')return{ex:cadEx(k,S.pos,S.v7),title:`${keyTitle(k)} cadence — position ${S.pos+1}`,note:'I – IV – I – V (or V7) – I. Fingering as printed on the cadence pages.'};
+}
+function fourth(k){const [R,L]=k.scale.split('/').map(fs);const mode=k.minor?'harm':'maj';const o=4;
+ const r=[],l=[];for(let s=0;s<7;s++){const n=nmShort(noteAt(k,s,o,mode));if(R[s]===4)r.push(n);if(L[s]===4)l.push(n)}
+ return `<span class="r">RH</span> 4th finger on ${r.join(' & ')} &nbsp;·&nbsp; <span class="l">LH</span> 4th finger on ${l.join(' & ')}`;}
+
+function render(){
+ if(S.view==='home'){
+  app.innerHTML=`<div id="home">
+   <h1>Piano Scale</h1>
+   <div class="sub">after Alfred’s Complete Book of Scales, Chords, Arpeggios &amp; Cadences</div>
+   <div class="by">by Joaquim Tidjani Diallo</div>
+   <button class="big" onclick="go({view:'list',group:'major'})">Major keys</button>
+   <button class="big" onclick="go({view:'list',group:'minor'})">Minor keys</button>
+   <button class="big" onclick="go({view:'key',group:'chrom'})">Chromatic scale</button>
+  </div>`;return;}
+ if(S.view==='list'){const ks=KEYS[S.group];
+  app.innerHTML=`<div class="wrap"><div class="bar"><button class="back" onclick="go({view:'home'})">‹ Home</button></div>
+  <h2>${S.group==='major'?'Major keys':'Minor keys'}</h2><div class="meta">${S.group==='major'?'Sharp keys, then flat keys — in the order of the book.':'Natural, harmonic &amp; melodic — in the order of the book.'}</div>
+  <div class="grid">${ks.map((k,i)=>`<button class="kbtn" onclick="go({view:'key',key:${i},tab:'scale',inv:0,pos:0})"><b>${k.name} ${k.minor?'minor':'major'}</b><small>${keySig(k).length?keySig(k).length+(keySig(k)[0].a>0?' ♯':' ♭'):'no ♯ or ♭'} · rel. ${k.rel}</small></button>`).join('')}</div>
+  <footer>Fingerings as printed in Alfred’s Basic Piano Library — <i>The Complete Book of Scales, Chords, Arpeggios &amp; Cadences</i> (Palmer · Manus · Lethco).</footer></div>`;return;}
+ // key view
+ const chrom=S.group==='chrom';const k=chrom?null:curKey();
+ const {ex,title,note}=exercise();
+ let head='',tabs='',opts='';
+ if(chrom){head=`<h2>Chromatic Scale</h2><div class="meta">One octave from C, up and down</div>`;opts+=seg([['par','Parallel'],['con','Contrary']],'motion')}
+ else{
+  head=`<h2>Key of ${keyTitle(k)}</h2><div class="meta">${k.minor?'Relative minor of '+k.rel:'Relative minor: '+k.rel}</div><div class="info4">${fourth(k)}</div>`;
+  const T=[['scale','Scales'],['arp','Arpeggios'],['sev',k.minor?'Dim. 7th arpeggios':'Dom. 7th arpeggios'],['tri','Triads'],['cad','Cadences']];
+  tabs=`<div class="tabs">${T.map(([id,l])=>`<button class="tab ${S.tab===id?'on':''}" onclick="go({tab:'${id}',inv:0})">${l}</button>`).join('')}</div>`;
+  if(S.tab==='scale'){opts+=seg([['par','Parallel'],['con','Contrary']],'motion');if(k.minor)opts+=seg([['nat','Natural'],['harm','Harmonic'],['mel','Melodic']],'mtype');}
+  if(S.tab==='arp')opts+=seg([[0,'Root'],[1,'1st inv.'],[2,'2nd inv.']],'inv');
+  if(S.tab==='sev')opts+=seg([[0,'Root'],[1,'1st'],[2,'2nd'],[3,'3rd']],'inv');
+  if(S.tab==='cad'){opts+=seg([[0,'Position 1'],[1,'Position 2'],[2,'Position 3']],'pos');opts+=seg([[false,'V'],[true,'V7']],'v7')}
+ }
+ opts+=seg([['rh','RH'],['lh','LH'],['both','Both']],'hand');
+ app.innerHTML=`<div class="wrap"><div class="bar"><button class="back" onclick="go({view:${chrom?"'home'":"'list'"}})">‹ ${chrom?'Home':(S.group==='major'?'Major keys':'Minor keys')}</button></div>
+ ${head}${tabs}<div>${opts}</div>
+ <div class="card"><div class="ctitle">${title}</div>${note?`<div class="cnote">${note}</div>`:''}
+  <div class="scroll" id="st">${staffSVG(ex,S.hand,k)}</div>
+  <div class="legend"><i style="background:var(--rh)"></i>RH fingers above &nbsp;<i style="background:var(--lh)"></i>LH fingers below</div></div>
+ <div class="ctrl"><button class="play" id="pb" onclick="toggle()">${S.timer?'■ Stop':'▶ Play'}</button>
+  <label>Tempo <input type="range" min="40" max="200" value="${S.bpm}" oninput="S.bpm=+this.value;document.getElementById('bv').textContent=this.value"> <span id="bv">${S.bpm}</span></label></div>
+ <div id="tap">Tap a note on the staff to see its name and finger.</div>
+ <div class="card"><div class="ctitle">Keyboard</div><div class="cnote">Fingers for the ascending part — the highlighted key follows playback or the tapped note.</div>
+  <div class="scroll" id="kb" style="padding:8px 14px 4px">${keyboardSVG(ex,S.hand,S.cur)}</div></div>
+ <footer>Fingerings as printed in Alfred’s Basic Piano Library — <i>The Complete Book of Scales, Chords, Arpeggios &amp; Cadences</i> (Palmer · Manus · Lethco).<br>Piano Scale · by Joaquim Tidjani Diallo</footer></div>`;
+ S.ex=ex;
+ document.getElementById('st').addEventListener('click',ev=>{const g=ev.target.closest('.ev');if(!g)return;select(+g.dataset.i,true)});
+}
+function seg(items,prop){return `<div class="seg">${items.map(([v,l])=>`<button class="${S[prop]===v?'on':''}" onclick='go({${prop}:${JSON.stringify(v)}})'>${l}</button>`).join('')}</div>`}
+function select(i,sound){
+ const ex=S.ex;S.cur=i;
+ document.querySelectorAll('.ev').forEach(g=>g.classList.toggle('cur',+g.dataset.i===i));
+ const e=ex.ev[i];const ups=S.hand==='both'?['rh','lh']:[S.hand];
+ const txt=ups.map(h=>`<b style="color:var(--${h})">${h.toUpperCase()}</b> ${e[h].map((n,j)=>`${nm(n)} — finger <b>${e['f'+h][j]}</b>`).join(' · ')}`).join('<br>');
+ document.getElementById('tap').innerHTML=(e.lab?`<b>${e.lab}</b>${e.sub?' ('+e.sub+')':''}<br>`:'')+txt;
+ document.getElementById('kb').innerHTML=keyboardSVG(ex,S.hand,i);
+ const sel=document.querySelector('.ev.cur');if(sel&&S.timer){const sc=document.getElementById('st');const r=sel.getBoundingClientRect(),rs=sc.getBoundingClientRect();if(r.right>rs.right-20||r.left<rs.left)sc.scrollLeft+=r.left-rs.left-rs.width/3}
+ if(sound){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();AC.resume();const t=AC.currentTime+.02;ups.forEach(h=>e[h].forEach(n=>tone(n.m,t,e.rh.length>1?1.4:.9)))}catch(err){}}
+}
+function toggle(){
+ if(S.timer){stop();render();return}
+ try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();AC.resume()}catch(e){}
+ let i=0;const ex=S.ex;const chord=ex.ev[0].rh.length>1;
+ const step=()=>{if(i>=ex.ev.length){stop();render();return}select(i,true);i++;S.timer=setTimeout(step,(60000/S.bpm)*(chord?2:1))};
+ S.timer=1;document.getElementById('pb').textContent='■ Stop';step();
+}
+render();
+</script>
+<script>if('serviceWorker' in navigator&&/^https?:/.test(location.protocol)&&location.hostname.endsWith('github.io')){addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}</script>
+</body>
+</html>

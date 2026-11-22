@@ -1,0 +1,17 @@
+{
+  "name": "Piano Scale – after Alfred's Complete Book of Scales",
+  "short_name": "Piano Scale",
+  "description": "Scales, arpeggios, triads and cadences with the fingerings of Alfred's Complete Book of Scales, by Joaquim Tidjani Diallo.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f1a17",
+  "theme_color": "#1f1a17",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
