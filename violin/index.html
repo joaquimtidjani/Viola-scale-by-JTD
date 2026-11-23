@@ -408,25 +408,35 @@ function board(items,single,pairs){var spots={},order=[];
   if(it.info&&sp.inf.indexOf(it.info)<0)sp.inf.push(it.info);
   var f=it.f===0?"0":(it.f===null||it.f===undefined||!it.pr)?"":String(it.f);if(f&&sp.fs.indexOf(f)<0)sp.fs.push(f);if(it.pr)sp.pr=true;it.sp=sp});
  var ps=order.map(function(o){return o.p}),pmin=Math.min.apply(null,ps),pmax=Math.max.apply(null,ps);
- var p0=pmin<=3?0:pmin-1,X0=58,SP=Math.max(20,Math.min(34,(470-X0-26)/Math.max(1,pmax-p0))),W=X0+SP*(pmax-p0)+26;
- function px(p){return X0+(p-p0)*SP}
- var strs=single!==undefined?[single]:[0,1,2,3],gap=44,top=30;
- function sy(s){return top+(single!==undefined?0:s*gap)}
- var H=sy(strs[strs.length-1])+34,acc="var(--acc)";
- var o='<svg style="min-width:0;max-width:'+Math.round(W*1.1)+'px" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Fingerboard: notes played">';
- strs.forEach(function(s){var y=sy(s);o+='<line x1="'+(X0-6)+'" x2="'+(W-6)+'" y1="'+y+'" y2="'+y+'" style="stroke:var(--fg);stroke-width:1.3"/>'+'<text x="2" y="'+(y+4)+'" style="font-size:11px;fill:var(--mut)">'+SN[s]+' '+SF[s]+'</text>'});
- var yA=sy(strs[0])-12,yB=sy(strs[strs.length-1])+12;
- if(p0===0)o+='<line x1="'+(X0-6)+'" x2="'+(X0-6)+'" y1="'+yA+'" y2="'+yB+'" style="stroke:var(--fg);stroke-width:5"/>';
- else o+='<line x1="'+(X0-6)+'" x2="'+(X0-6)+'" y1="'+yA+'" y2="'+yB+'" style="stroke:var(--mut);stroke-width:1.5;stroke-dasharray:3 3"/>';
- (pairs||[]).forEach(function(pr){var a=pr[0].sp,b=pr[1].sp;o+='<line x1="'+px(a.p)+'" y1="'+sy(a.s)+'" x2="'+px(b.p)+'" y2="'+sy(b.s)+'" style="stroke:var(--line);stroke-width:3"/>'});
- strs.forEach(function(s){var q=order.filter(function(o){return o.s===s}).map(function(o){return o.p}).sort(function(a,b){return a-b});
-  for(var i=1;i<q.length;i++){var d=q[i]-q[i-1];if(d<1||d>2)continue;var h=d===1,x=(px(q[i])+px(q[i-1]))/2,y=sy(s)-14;
-   o+='<text class="hf" x="'+x+'" y="'+y+'" text-anchor="middle" style="fill:'+(h?acc:'var(--mut)')+'">'+(h?'½':'T')+'</text>'}});
- order.forEach(function(sp){var x=px(sp.p),y=sy(sp.s),t=sp.fs.join("/"),w=t.length>1?10+7*t.length:20;
-  o+='<rect x="'+(x-w/2)+'" y="'+(y-10)+'" width="'+w+'" height="20" rx="10" style="fill:'+(sp.pr?acc:'var(--card)')+';stroke:'+acc+';stroke-width:1.6"/>'
-   +'<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="15" font-weight="bold" style="fill:'+(sp.pr?'#fff':'var(--fg)')+'">'+t+'</text>'
-   +'<text x="'+x+'" y="'+(y+24)+'" text-anchor="middle" style="font-size:12px;fill:var(--mut)">'+sp.nm+'</text>'
-   +(sp.inf.length?'<rect class="tap" x="'+(x-Math.max(w,24)/2)+'" y="'+(y-14)+'" width="'+Math.max(w,24)+'" height="40" fill="transparent" data-info="'+sp.inf.join(" | ")+'"/>':'')});
+ /* vertical neck, seen as when playing: scroll at the top, G string on the left, E on the right */
+ var p0=pmin<=4?0:pmin-1,SP=Math.max(22,Math.min(34,520/Math.max(1,pmax-p0+1))),W=300,XS=[72,124,176,228],CX=150,
+  nutY=178,brk=p0>0,y1=nutY+(brk?40:0),yEnd=y1+SP*(pmax-p0+1.4),H=yEnd+44;
+ function py(p){return p===0?nutY-1:y1+(p-p0)*SP}
+ var o='<svg style="min-width:0;max-width:360px;margin:0 auto" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Violin neck: notes played">';
+ /* scroll and pegbox */
+ o+='<path d="M118 '+(nutY-4)+' L122 64 Q150 52 178 64 L182 '+(nutY-4)+' Z" fill="#6b4226" stroke="#3b2414" stroke-width="2"/>'
+  +'<path d="M132 '+(nutY-10)+' L134 72 Q150 66 166 72 L168 '+(nutY-10)+' Z" fill="#2a170c"/>'
+  +'<circle cx="'+CX+'" cy="40" r="30" fill="#6b4226" stroke="#3b2414" stroke-width="2"/>'
+  +'<path d="M150 40 m0 -22 a22 22 0 1 1 -1 0 M150 40 m0 -14 a14 14 0 1 1 -1 0 M150 40 m0 -7 a7 7 0 1 1 -1 0" fill="none" stroke="#3b2414" stroke-width="2"/>';
+ [[84,0],[104,1],[124,0],[144,1]].forEach(function(q,i){var y=q[0],L=q[1];
+  o+='<rect x="'+(L?182:88)+'" y="'+(y-6)+'" width="30" height="12" rx="5" fill="#1d120a"/><circle cx="'+(L?214:86)+'" cy="'+y+'" r="9" fill="#1d120a"/>'
+   +'<line x1="'+(137+9*i)+'" y1="'+y+'" x2="'+XS[i]+'" y2="'+(nutY-2)+'" style="stroke:#d9d2c3;stroke-width:'+(1.9-0.3*i)+'"/>'});
+ /* fingerboard */
+ o+='<path d="M48 '+nutY+' L252 '+nutY+' L262 '+yEnd+' L38 '+yEnd+' Z" fill="#141210"/>'
+  +'<rect x="46" y="'+(nutY-5)+'" width="208" height="7" rx="2" fill="#efe6d2" stroke="#9c8f74" stroke-width=".8"/>';
+ if(brk)o+='<path d="M38 '+(nutY+22)+' L80 '+(nutY+14)+' L120 '+(nutY+26)+' L160 '+(nutY+14)+' L200 '+(nutY+26)+' L262 '+(nutY+16)+'" fill="none" style="stroke:var(--bg);stroke-width:6"/>';
+ XS.forEach(function(x,s){o+='<line x1="'+x+'" x2="'+x+'" y1="'+(nutY+2)+'" y2="'+yEnd+'" style="stroke:#d9d2c3;stroke-width:'+(2.4-0.4*s)+'"/>'
+  +'<text x="'+x+'" y="'+(yEnd+18)+'" text-anchor="middle" style="font-size:14px;font-weight:bold;fill:var(--fg)">'+SF[s]+'</text>'
+  +'<text x="'+x+'" y="'+(yEnd+34)+'" text-anchor="middle" style="font-size:11px;fill:var(--mut)">'+SN[s]+'</text>'});
+ (pairs||[]).forEach(function(pr){var a=pr[0].sp,b=pr[1].sp;o+='<line x1="'+XS[a.s]+'" y1="'+py(a.p)+'" x2="'+XS[b.s]+'" y2="'+py(b.p)+'" style="stroke:#8a8070;stroke-width:3"/>'});
+ [0,1,2,3].forEach(function(s){var q=order.filter(function(o){return o.s===s&&o.p>0}).map(function(o){return o.p}).sort(function(a,b){return a-b});
+  for(var i=1;i<q.length;i++){var d=q[i]-q[i-1];if(d<1||d>2)continue;var h=d===1;
+   o+='<text x="'+(XS[s]-16)+'" y="'+((py(q[i])+py(q[i-1]))/2+4)+'" text-anchor="middle" style="font-size:11px;font-weight:bold;fill:'+(h?'#ff9b7d':'#bdb3a3')+'">'+(h?'½':'T')+'</text>'}});
+ order.forEach(function(sp){var x=XS[sp.s],y=py(sp.p),t=sp.fs.join("/"),w=t.length>1?10+7*t.length:22;
+  o+='<rect x="'+(x-w/2)+'" y="'+(y-11)+'" width="'+w+'" height="22" rx="11" style="fill:'+(sp.pr?'var(--acc)':'#f6f1e8')+';stroke:'+(sp.pr?'#fff':'var(--acc)')+';stroke-width:1.6"/>'
+   +'<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="14" font-weight="bold" style="fill:'+(sp.pr?'#fff':'#1f1a17')+'">'+t+'</text>'
+   +'<text x="'+(x+w/2+2)+'" y="'+(y+4)+'" style="font-size:10px;fill:'+(sp.p===0?'var(--fg)':'#e9e1d2')+'">'+sp.nm+'</text>'
+   +(sp.inf.length?'<rect class="tap" x="'+(x-16)+'" y="'+(y-14)+'" width="32" height="28" fill="transparent" data-info="'+sp.inf.join(" | ")+'"/>':'')});
  return o+'</svg>'}
 function boardLine(notes,corde){var s=SNI[corde],I=rowInfo(notes,corde);return board(notes.map(function(n,k){return{s:s,p:midi(n[0])-OPS[s],f:n[1],pr:n[2],nm:nomNote(n[0]),info:I[k]}}),s)}
 var SNI={IV:0,III:1,II:2,I:3};
