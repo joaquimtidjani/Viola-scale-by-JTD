@@ -39,10 +39,10 @@ button{font:inherit;font-size:1rem;padding:9px 15px;border-radius:999px;border:1
 button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
 button:disabled{opacity:.38}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{text-align:center;min-width:48px;padding:6px 8px;border:1px solid var(--line);border-radius:10px}
-.chip small{display:block;color:var(--mut);font-size:.78rem}
-.chip strong{font-size:1.45rem;font-weight:normal;color:var(--mut)}
+.chips{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:2px;padding:2px 0 6px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;text-align:center;min-width:28px;padding:3px 5px;border-radius:7px;line-height:1.15}.chip.p{background:color-mix(in srgb,var(--acc) 9%,transparent)}
+.chip small{display:block;color:var(--mut);font-size:.64rem;white-space:nowrap}
+.chip strong{font-size:1.02rem;font-weight:normal;color:var(--mut);opacity:.45}.chip.p strong{opacity:1}details.src{margin-top:8px}details.src summary{cursor:pointer;color:var(--mut);font-size:.8rem;list-style:none}details.src summary::before{content:"ⓘ  "}details.src summary::-webkit-details-marker{display:none}details.src .note{margin-top:4px}
 .chip.p strong{color:var(--acc);font-weight:bold}
 .scroll{overflow-x:auto}
 svg{width:100%;min-width:480px;height:auto;display:block}
@@ -83,13 +83,13 @@ svg .fp{fill:var(--acc);font-weight:bold}
 
 <h2>Fingerings</h2>
 <div class="card"><div class="chips" id="chips"></div>
-<p class="note" id="srcnote">Only the fingerings printed by Carl Flesch are shown. Notes without a number are not fingered in the book.<br>Source: Carl Flesch, Das Skalensystem (violin). Contents of the book, for each key: exercises 1 to 4, the scale, arpeggios, broken thirds and chromatic scale on one string (1st, 2nd, 3rd octave); exercise 5, the same over three octaves (checked note by note against the book); exercises 6 to 11: thirds, sixths, octaves, fingered octaves, tenths and harmonics (here, the first bar of 6, 7, 8 and 9, and all of 10 and 11, checked against the book). When Flesch prints two fingerings, the second one is below the staff.</p></div>
+<details class="src"><summary>Source</summary><p class="note" id="srcnote">Only the fingerings printed by Carl Flesch are shown. Notes without a number are not fingered in the book.<br>Source: Carl Flesch, Das Skalensystem (violin). Contents of the book, for each key: exercises 1 to 4, the scale, arpeggios, broken thirds and chromatic scale on one string (1st, 2nd, 3rd octave); exercise 5, the same over three octaves (checked note by note against the book); exercises 6 to 11: thirds, sixths, octaves, fingered octaves, tenths and harmonics (here, the first bar of 6, 7, 8 and 9, and all of 10 and 11, checked against the book). When Flesch prints two fingerings, the second one is below the staff.</p></details></div>
 
 <h2>Score</h2>
 <div class="card scroll"><div id="staff"></div></div>
 
 <h2>Violin fingerboard</h2>
-<div class="card scroll"><div id="fb"></div><p class="note" id="fbnote">Only the notes played are shown, on the string where they are played. The number is the finger printed by Flesch (“4/3”: same note taken by two fingers); empty circle: finger not marked. ½ = fingers close together (half step), T = fingers apart (whole step). The neck is drawn as you see it when playing: scroll at the top, G string on the left; open strings sit on the nut. A white zigzag means the neck is cut (higher positions).<br><b>Tap a note</b> (on the staff or the fingerboard) to see its name, string, finger and position.</p></div>
+<div class="card scroll"><div id="fb"></div><details class="src"><summary>Legend</summary><p class="note" id="fbnote">Only the notes played are shown, on the string where they are played. The number is the finger printed by Flesch (“4/3”: same note taken by two fingers); empty circle: finger not marked. ½ = fingers close together (half step), T = fingers apart (whole step). The neck is drawn as you see it when playing: scroll at the top, G string on the left; open strings sit on the nut. A white zigzag means the neck is cut (higher positions).<br><b>Tap a note</b> (on the staff or the fingerboard) to see its name, string, finger and position.</p></details></div>
 </main>
 <div id="tip" role="status" aria-live="polite"></div>
 
@@ -453,7 +453,7 @@ function boardDbl(list){var items=[],pairs=[],I=dblInfo(list);
   if(!n[7]){var t=n[9]!==undefined?n[9]:s+1,b={s:t,p:midi(n[1])-OPS[t],f:n[3],pr:n[5],nm:nomNote(n[1]),info:I[k][1]};items.push(b);pairs.push([a,b])}});
  return board(items,undefined,pairs)}
 function splitTop(list){var im=0,mv=-1;list.forEach(function(n,i){var v=midi(n[n[7]?0:1]);if(v>mv){mv=v;im=i}});return[list.slice(0,im+1),list.slice(im+1)]}
-function fbHTML(d){var L=function(t,i){return'<p class="note" style="margin:'+(i?10:0)+'px 0 2px">'+t+'</p>'};
+function ED(t){t=String(t);if(t==="/"||t==="")return"·";if(t[0]==="/")return"·"+t;if(t.slice(-1)==="/")return t+"·";return t}function fbHTML(d){var L=function(t,i){return'<p class="note" style="margin:'+(i?10:0)+'px 0 2px">'+t+'</p>'};
  if(d.rows)return d.rows.map(function(r,i){return L(r.nom,i)+boardLine(r.notes,d.corde)}).join("");
  if(d.dbl){var sp=splitTop(d.notes);return L("Ascending",0)+boardDbl(sp[0])+(sp[1].length?L("Descending",1)+boardDbl(sp[1]):"")}
  return L(d.desc?"Ascending":"",0)+boardLine(d.notes,d.corde)+(d.desc?L("Descending",1)+boardLine(d.desc,d.corde):"")}
@@ -656,7 +656,7 @@ function render(){
  if(d.rows)d.rows.forEach(function(r){var L=r.notes.filter(function(n){return n[3]!==undefined});c.insertAdjacentHTML("beforeend",'<div class="chip'+(r.notes.some(function(n){return n[2]})?' p':'')+'" style="text-align:left"><small>'+r.nom+'</small><strong style="font-size:1.05rem;letter-spacing:.12em">'+r.notes.map(function(n){return n[2]?'<span style="color:var(--acc)">'+n[1]+'</span>':''}).join(" ")+'</strong>'+(L.length?'<small style="color:var(--acc);letter-spacing:.12em">'+L.map(function(n){return n[3]}).join(" ")+'</small>':'')+'</div>')});
  var AL=d.dbl||d.rows?[]:d.notes.concat(d.desc||[]);AL.forEach(function(n,ji){var p=parse(n[0]);
   c.insertAdjacentHTML("beforeend",'<div class="chip'+(n[2]?' p':'')+'"><small>'+FR[p.l]+(p.a==="#"?"♯":p.a==="b"?"♭":"")+'</small><strong>'+(n[2]?n[1]:arw(AL,ji))+'</strong>'+lo(n)+'</div>')});
- if(d.dbl)d.notes.forEach(function(n,ji){var a=parse(n[0]),b=parse(n[1]);c.insertAdjacentHTML("beforeend",'<div class="chip'+((n[4]||n[5])?' p':'')+'"><small>'+FR[a.l]+(a.a==="#"?"♯":a.a==="b"?"♭":"")+(n[7]?'':'–'+FR[b.l]+(b.a==="#"?"♯":b.a==="b"?"♭":""))+'</small><strong>'+(n[7]?(n[4]?n[2]:arw(d.notes,ji)):(n[4]?n[2]:arw(d.notes,ji))+'/'+(n[5]?n[3]:arw(d.notes,ji,1)))+'</strong></div>')});
+ if(d.dbl)d.notes.forEach(function(n,ji){var a=parse(n[0]),b=parse(n[1]);c.insertAdjacentHTML("beforeend",'<div class="chip'+((n[4]||n[5])?' p':'')+'"><small>'+FR[a.l]+(a.a==="#"?"♯":a.a==="b"?"♭":"")+(n[7]?'':'–'+FR[b.l]+(b.a==="#"?"♯":b.a==="b"?"♭":""))+'</small><strong>'+ED(n[7]?(n[4]?n[2]:arw(d.notes,ji)):(n[4]?n[2]:arw(d.notes,ji))+'/'+(n[5]?n[3]:arw(d.notes,ji,1)))+'</strong></div>')});
  if(d.multi){var M=multiHTML(d,sel.ser);document.getElementById("staff").innerHTML=M.st;document.getElementById("fb").innerHTML=M.fb;return}
  var V=(sel.ser&&d.alt)?serView(d):d;
  if(d.rows){document.getElementById("staff").innerHTML=d.rows.map(function(r,i){return '<p class="note" style="margin:'+(i?8:0)+'px 0 2px">'+r.nom+'</p>'+draw({corde:i?"":d.corde,corde2:i?"":(d.alt||""),notes:r.notes,gap:44,info:rowInfo(V.rows[i].notes,V.corde)})}).join("");
@@ -900,6 +900,8 @@ var TD={
 "Chromatic":["半音阶","क्रोमैटिक","Cromática","الكروماتيكي","Chromatique","ক্রোমাটিক","Cromática","Хроматическая","Kromatik"],
 "Chromatic scale":["半音阶","क्रोमैटिक स्केल","Escala cromática","السلّم الكروماتيكي","Gamme chromatique","ক্রোমাটিক স্কেল","Escala cromática","Хроматическая гамма","Tangga nada kromatik"],
 "Broken thirds":["分解三度","ब्रोकन थर्ड्स","Terceras quebradas","الثالثات المكسّرة","Tierces brisées","ব্রোকেন থার্ড","Terças quebradas","Ломаные терции","Terts patah"],
+"Legend":["图例","संकेत","Leyenda","مفتاح الرموز","Légende","সংকেত","Legenda","Обозначения","Keterangan"],
+"Source":["来源","स्रोत","Fuente","المصدر","Source","উৎস","Fonte","Источник","Sumber"],
 "Thirds":["三度","थर्ड्स","Terceras","الثالثات","Tierces","থার্ড","Terças","Терции","Terts"],
 "Sixths":["六度","सिक्स्थ्स","Sextas","السادسات","Sixtes","সিক্সথ","Sextas","Сексты","Sekst"],
 "Octaves":["八度","ऑक्टेव","Octavas","الأوكتافات","Octaves","অক্টেভ","Oitavas","Октавы","Oktaf"],
