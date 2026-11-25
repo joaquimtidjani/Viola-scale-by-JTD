@@ -1068,5 +1068,16 @@ function setLang(l){LANG=l;try{localStorage.setItem("vs_lang",l)}catch(e){}
  document.addEventListener("click",function(){var tip=document.getElementById("tip");if(tip.classList.contains("on"))tip.textContent=T(tip.textContent)});
  setLang(LANG)})();
 </script>
+<!--SLIDEHINT--><style>.slidehint{font-size:.74rem;color:var(--mut);text-align:right;margin:3px 4px 0;letter-spacing:.02em;transition:opacity .25s}.slidehint.off{display:none}.slidehint span{display:inline-block;animation:shn 1.4s ease-in-out infinite}@keyframes shn{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}@media (prefers-reduced-motion:reduce){.slidehint span{animation:none}}</style>
+<script>(function(){var W={en:"Slide for more",zh:"滑动查看更多",hi:"और देखने के लिए स्लाइड करें",es:"Desliza para ver más",ar:"اسحب لرؤية المزيد",fr:"Glisse pour voir la suite",bn:"আরও দেখতে স্লাইড করুন",pt:"Deslize para ver mais",ru:"Листайте, чтобы увидеть больше",id:"Geser untuk melihat lainnya"};
+function txt(){var l=(document.documentElement.lang||"en").slice(0,2);return (W[l]||W.en)}
+var q=0;function scan(){q=0;document.querySelectorAll("#chips,.scroll").forEach(function(el){var h=el.nextElementSibling;if(!h||!h.classList||!h.classList.contains("slidehint")){h=document.createElement("div");h.className="slidehint";el.insertAdjacentElement("afterend",h)}
+ var rtl=document.documentElement.dir==="rtl",t=txt()+" ",ar=rtl?"←":"→",html=t+"<span>"+ar+"</span>";if(h.getAttribute("data-t")!==html){h.setAttribute("data-t",html);h.innerHTML=html}
+ var over=el.scrollWidth>el.clientWidth+6,end=Math.abs(el.scrollLeft)+el.clientWidth>=el.scrollWidth-6;h.classList.toggle("off",!over||end)})}
+function later(){if(!q){q=1;requestAnimationFrame(scan)}}
+document.addEventListener("scroll",later,true);window.addEventListener("resize",later);
+new MutationObserver(function(m){for(var i=0;i<m.length;i++){var t=m[i].target;if(!(t.classList&&t.classList.contains("slidehint"))&&!(t.parentNode&&t.parentNode.classList&&t.parentNode.classList.contains("slidehint"))){later();return}}}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["lang","class"]});
+new MutationObserver(later).observe(document.documentElement,{attributes:true,attributeFilter:["lang","dir"]});
+later();setTimeout(later,500)})();</script><!--/SLIDEHINT-->
 </body>
 </html>
